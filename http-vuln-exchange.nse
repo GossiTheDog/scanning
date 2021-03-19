@@ -175,7 +175,7 @@ action = function(host, port, redirects)
   if answer.status == 302 then
     return "Error 302 " .. answer.location
   elseif answer.status ~= 200 then
-    return "Error " .. tostring(answer.status.line) .. " for /owa"
+    return "Error: " .. tostring(answer["status-line"]) .. " for /owa"
   end
 
   local v_level = nmap.verbosity() + (nmap.debugging()*2)
