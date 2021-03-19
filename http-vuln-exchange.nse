@@ -65,7 +65,7 @@ local function checkversion(w)
   --Exchange 2013 - Patches available for CU23 (1497), CU22 (1473), CU21 (1395) and SP1 (847)
 
   elseif w:find("^15.0.*") ~= nil then
-                minor == tonumber(mytable[3])
+                minor = tonumber(mytable[3])
                 if  minor == 1497 then
                         output = "Exchange 2013 CU23. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
                 elseif minor == 1473 then
@@ -74,17 +74,17 @@ local function checkversion(w)
                         output = "Exchange 2013 CU21. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
                 elseif minor - 847 then
                         output = "Exchange 2013 SP1. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
-                if  minor > 1497 then
+                elseif  minor > 1497 then
                         output = "Exchange 2013 after CU23. PATCHED (> 15.0.1497)"
                 else
-                        output = "Exchange 2013. Likely VULNERABLE! No security patches available on " ... last_updated .. "(!~ 15.0.(1497|1473|1395|847) and < 15.0.1497)"
+                        output = "Exchange 2013. Likely VULNERABLE! No security patches available on " .. last_update .. "(!~ 15.0.(1497|1473|1395|847) and < 15.0.1497)"
                 end
 
   -- Exchange 2016 - Patches available for CU19 (2176), CU18 (2106), CU17 (2044), CU16 (1979), CU15 (1913), CU14 (1847), CU13 (1779), CU12 (1713), CU11 (1591), 
   --                                       CU10 (1531), CU9 (1466), CU8 (1415)
 
   elseif w:find("^15.1.*") ~= nil then
-                minor == tonumber(mytable[3])
+                minor = tonumber(mytable[3])
                 if minor == 2176 then
                         output = "Exchange 2016 CU19. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
                 elseif minor == 2106 then
@@ -112,13 +112,13 @@ local function checkversion(w)
                 elseif minor > 2176 then
                         output = "Exchange 2016 after CU19. PATCHED (> 15.1.2176)"
                 else
-                        output = "Exchange 2016 before CU8. VULNERABLE! No patches available on " .. last_updated .. "(< 15.1.1415)"
+                        output = "Exchange 2016 before CU8. VULNERABLE! No patches available on " .. last_update .. "(< 15.1.1415)"
                 end
 
   -- Exchange 2019 - Patches available for CU8 (792), CU7 (721), CU6 (659), CU5 (595), CU4 (529), CU3 (464), CU2 (397), CU1 (221)
 
   elseif w:find("^15.2.*") ~= nil then
-                minor == tonumber(mytable[3])
+                minor = tonumber(mytable[3])
                 if minor == 792 then
                         output = "Exchange 2019 CU8. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
                 elseif minor == 721 then
@@ -138,7 +138,7 @@ local function checkversion(w)
                 elseif minor > 792 then
                         output = "Exchange 2019 after CU8, PATCHED (> 15.2.792)"
                 else
-                        output = "Exchange 2019 before CU1. VULNERABLE! No patches available on " .. last_updated .. " (< 15.2.221)"
+                        output = "Exchange 2019 before CU1. VULNERABLE! No patches available on " .. last_update .. " (< 15.2.221)"
                 end
   else
                 output = "Exchange " .. w
@@ -167,7 +167,7 @@ local function parse_answer(body)
   end
 end
 
-action = function(host, port)
+action = function(host, port, redirects)
   local dis_count, noun
   options = {header={}}    options['header']['User-Agent'] = "Mozilla/5.0 (Exchange check)"
   local answer = http.get(host, port, "/owa", options )
@@ -175,7 +175,7 @@ action = function(host, port)
   if answer.status == 302 then
     return "Error 302 " .. answer.location
   elseif answer.status ~= 200 then
-    return "Error " .. tostring(answer.status) .. " for /owa"
+    return "Error " .. tostring(answer.status.line) .. " for /owa"
   end
 
   local v_level = nmap.verbosity() + (nmap.debugging()*2)
