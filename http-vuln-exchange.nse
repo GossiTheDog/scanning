@@ -18,7 +18,8 @@ Originally based on source by onSec-fr and k4nfr3, thanks!
 --443/tcp open  https
 --|_http-vuln-proxylogon: (15.1.2176) Exchange 2016 potentially vulnerable, check latest security update is applied (Exchange 2016 CU18 or CU19 installed)
 
-author = "Kevin Beaumont"
+author = "Kevin Beaumont / Dutch Institute for Vulnerability Disclosure (DIVD.nl)"
+last_update = "March 19, 2021"
 license = "GPLv3"
 categories = {"default", "discovery", "safe", "exploit"}
 
@@ -49,43 +50,95 @@ local function checkversion(w)
 
   elseif w:find("^14.0.*") ~= nil then
            if tonumber(mytable[3]) < 727 then
-           output = "Exchange 2010 VULNERABLE to Unified Messaging issues! (< 14 RTM version installed, no Service Packs)"
+           output = "Exchange 2010 VULNERABLE! to Unified Messaging issues! (< 14 RTM version installed, no Service Packs)"
            end
 
   elseif w:find("^14.*") ~= nil then
                 if tonumber(mytable[3]) < 496 then
-                        output = "Exchange 2010 VULNERABLE to Unified Messaging issues! (< 14.*.496)"
+                        output = "Exchange 2010 VULNERABLE! to Unified Messaging issues! (< 14.*.496)"
                 elseif tonumber(mytable[3]) == 496 then
-                        output = "Exchange 2010 potentially vulnerable, check latest security update is applied (= 14.*.496)"
+                        output = "Exchange 2010 patch status cannot be determined from version number, check locally if latest security update is applied (= 14.*.496)"
                 else
-                        output = "Exchange 2010 not vulnerable (>14.*.496)"
+                        output = "Exchange 2010 PATCHED (>14.*.496)"
                 end
+
+  --Exchange 2013 - Patches available for CU23 (1497), CU22 (1473), CU21 (1395) and SP1 (847)
 
   elseif w:find("^15.0.*") ~= nil then
-                if tonumber(mytable[3]) < 1497 then
-                        output = "Exchange 2013 VULNERABLE! (< 15.0.1496)"
-                elseif  tonumber(mytable[3]) == 1497 then
-                        output = "Exchange 2013 potentially vulnerable, check latest security update is applied (15.0.1497 Exchange 2013 CU23 installed)"
+                minor == tonumber(mytable[3])
+                if  minor == 1497 then
+                        output = "Exchange 2013 CU23. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
+                elseif minor == 1473 then
+                        output = "Exchange 2013 CU22. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
+                elseif minor == 1395 then
+                        output = "Exchange 2013 CU21. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
+                elseif minor - 847 then
+                        output = "Exchange 2013 SP1. Patch status cannot be determined from version number, check locally if patches are applied (= 15.0." .. minor .. ")"
+                if  minor > 1497 then
+                        output = "Exchange 2013 after CU23. PATCHED (> 15.0.1497)"
                 else
-                        output = "Exchange 2013 not vulnerable (>15.0.1497)"
+                        output = "Exchange 2013. Likely VULNERABLE! No security patches available on " ... last_updated .. "(!~ 15.0.(1497|1473|1395|847) and < 15.0.1497)"
                 end
+
+  -- Exchange 2016 - Patches available for CU19 (2176), CU18 (2106), CU17 (2044), CU16 (1979), CU15 (1913), CU14 (1847), CU13 (1779), CU12 (1713), CU11 (1591), 
+  --                                       CU10 (1531), CU9 (1466), CU8 (1415)
 
   elseif w:find("^15.1.*") ~= nil then
-                if tonumber(mytable[3]) == 2176 or tonumber(mytable[3]) == 2106 then
-                        output = "Exchange 2016 potentially vulnerable, check latest security update is applied (Exchange 2016 CU18 or CU19 installed)"
-                elseif tonumber(mytable[3]) < 2106 then
-                        output = "Exchange 2016 VULNERABLE! (< 15.1.2106)"
+                minor == tonumber(mytable[3])
+                if minor == 2176 then
+                        output = "Exchange 2016 CU19. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 2106 then
+                        output = "Exchange 2016 CU18. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 2044 then
+                        output = "Exchange 2016 CU17. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1979 then
+                        output = "Exchange 2016 CU16. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1913 then
+                        output = "Exchange 2016 CU15. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1847 then
+                        output = "Exchange 2016 CU14. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1779 then
+                        output = "Exchange 2016 CU13. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1713 then
+                        output = "Exchange 2016 CU12. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1591 then
+                        output = "Exchange 2016 CU11. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1531 then
+                        output = "Exchange 2016 CU10. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1466 then
+                        output = "Exchange 2016 CU9. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor == 1415 then
+                        output = "Exchange 2016 CU8. Patch status cannot be determined from version number, check locally if patches are applied (= 15.1." .. minor .. ")"
+                elseif minor > 2176 then
+                        output = "Exchange 2016 after CU19. PATCHED (> 15.1.2176)"
                 else
-                        output = "Exchange 2016 not vulnerable (> 15.1.2176)"
+                        output = "Exchange 2016 before CU8. VULNERABLE! No patches available on " .. last_updated .. "(< 15.1.1415)"
                 end
 
+  -- Exchange 2019 - Patches available for CU8 (792), CU7 (721), CU6 (659), CU5 (595), CU4 (529), CU3 (464), CU2 (397), CU1 (221)
+
   elseif w:find("^15.2.*") ~= nil then
-                if tonumber(mytable[3]) == 792 or tonumber(mytable[3]) == 721 then
-                        output = "Exchange 2019 potentially vulnerable, check latest security update is applied (Exchange 2019 CU7 or CU8 installed)"
-                elseif tonumber(mytable[3]) < 720 then
-                        output = "Exchange 2019 VULNERABLE !!! (< 15.2.720)"
+                minor == tonumber(mytable[3])
+                if minor == 792 then
+                        output = "Exchange 2019 CU8. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 721 then
+                        output = "Exchange 2019 CU7. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 659 then
+                        output = "Exchange 2019 CU6. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 595 then
+                        output = "Exchange 2019 CU5. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 529 then
+                        output = "Exchange 2019 CU4. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 464 then
+                        output = "Exchange 2019 CU3. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 397 then
+                        output = "Exchange 2019 CU2. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor == 221 then
+                        output = "Exchange 2019 CU1. Patch status cannot be determined from version number, check locally if patches are applied (= 15.2." .. minor .. ")"
+                elseif minor > 792 then
+                        output = "Exchange 2019 after CU8, PATCHED (> 15.2.792)"
                 else
-                        output = "Exchange 2019 not vulnerable (> 15.2.792)"
+                        output = "Exchange 2019 before CU1. VULNERABLE! No patches available on " .. last_updated .. " (< 15.2.221)"
                 end
   else
                 output = "Exchange " .. w
