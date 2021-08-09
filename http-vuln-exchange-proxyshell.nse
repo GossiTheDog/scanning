@@ -25,7 +25,7 @@ local last_len = 0
 
 action = function(host, port)
   local dis_count, noun
-  options = {redirect_ok = false}:
+  options = {redirect_ok = false}
   local answer = http.get(host, port, "/autodiscover/autodiscover.json?@test.com/owa/?&Email=autodiscover/autodiscover.json%3F@test.com", options)
 
   if answer.status == 400 then
