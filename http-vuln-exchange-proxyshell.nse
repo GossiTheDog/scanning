@@ -31,7 +31,7 @@ action = function(host, port)
   if answer.status == 400 then
         return "Not vulnerable to ProxyShell SSRF"
   elseif answer.status == 302 then
-        return "** Vulnerable to ProxyShell SSRPF **"
+        return "** Vulnerable to ProxyShell SSRF **"
   else
         return "Unknown error code returned - maybe not an Exchange server"
   end
