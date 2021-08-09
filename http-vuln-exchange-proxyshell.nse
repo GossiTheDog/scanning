@@ -33,7 +33,7 @@ action = function(host, port)
   elseif answer.status == 302 then
         return "** Vulnerable to ProxyShell SSRF **"
   else
-        return "Unknown error code returned - maybe not an Exchange server"
+        return "Unknown error code returned - " .. answer.status .. " - maybe not an Exchange server"
   end
 
   local v_level = nmap.verbosity() + (nmap.debugging()*2)
