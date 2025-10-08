@@ -16,7 +16,7 @@ Originally based on source by onSec-fr and k4nfr3, thanks!
 --@output
 --PORT    STATE SERVICE
 --443/tcp open  https
---|_http-vuln-proxylogon: (15.1.2176) Exchange 2016 potentially vulnerable, check latest security update is applied (Exchange 2016 CU18 or CU19 installed)
+--|_http-vuln-proxylogon: (15.1.2176) Exchange 2016 can't determine vulnerability status, check latest security update is applied (Exchange 2016 CU18 or CU19 installed)
 
 author = "Kevin Beaumont"
 license = "GPLv3"
@@ -56,7 +56,7 @@ local function checkversion(w)
                 if tonumber(mytable[3]) < 496 then
                         output = "Exchange 2010 VULNERABLE to Unified Messaging issues! (< 14.*.496)"
                 elseif tonumber(mytable[3]) == 496 then
-                        output = "Exchange 2010 potentially vulnerable, check latest security update is applied (= 14.*.496)"
+                        output = "Exchange 2010 can't determine vulnerability status, check latest security update is applied (= 14.*.496)"
                 else
                         output = "Exchange 2010 not vulnerable (>14.*.496)"
                 end
@@ -65,14 +65,14 @@ local function checkversion(w)
                 if tonumber(mytable[3]) < 1497 then
                         output = "Exchange 2013 VULNERABLE! (< 15.0.1496)"
                 elseif  tonumber(mytable[3]) == 1497 then
-                        output = "Exchange 2013 potentially vulnerable, check latest security update is applied (15.0.1497 Exchange 2013 CU23 installed)"
+                        output = "Exchange 2013 can't determine vulnerability status, check latest security update is applied (15.0.1497 Exchange 2013 CU23 installed)"
                 else
                         output = "Exchange 2013 not vulnerable (>15.0.1497)"
                 end
 
   elseif w:find("^15.1.*") ~= nil then
                 if tonumber(mytable[3]) == 2176 or tonumber(mytable[3]) == 2106 then
-                        output = "Exchange 2016 potentially vulnerable, check latest security update is applied (Exchange 2016 CU18 or CU19 installed)"
+                        output = "Exchange 2016 can't determine vulnerability status, check latest security update is applied (Exchange 2016 CU18 or CU19 installed)"
                 elseif tonumber(mytable[3]) < 2106 then
                         output = "Exchange 2016 VULNERABLE! (< 15.1.2106)"
                 else
@@ -81,7 +81,7 @@ local function checkversion(w)
 
   elseif w:find("^15.2.*") ~= nil then
                 if tonumber(mytable[3]) == 792 or tonumber(mytable[3]) == 721 then
-                        output = "Exchange 2019 potentially vulnerable, check latest security update is applied (Exchange 2019 CU7 or CU8 installed)"
+                        output = "Exchange 2019 can't determine vulnerability status, check latest security update is applied (Exchange 2019 CU7 or CU8 installed)"
                 elseif tonumber(mytable[3]) < 720 then
                         output = "Exchange 2019 VULNERABLE !!! (< 15.2.720)"
                 else
