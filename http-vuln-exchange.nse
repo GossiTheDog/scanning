@@ -120,7 +120,7 @@ action = function(host, port)
   local answer = http.get(host, port, "/owa", options )
 
   if answer.status == 302 then
-    return "Error 302 " .. answer.location
+    return "Error 302 " .. table.concat(answer.location," -> ")
   elseif answer.status ~= 200 then
     return "Error " .. tostring(answer.status) .. " for /owa"
   end
